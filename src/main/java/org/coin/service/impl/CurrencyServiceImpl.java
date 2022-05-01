@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.coin.config.PropertyConfig;
 import org.coin.entity.Currency;
 import org.coin.enums.ReturnStatus;
@@ -98,17 +99,20 @@ public class CurrencyServiceImpl implements CurrencyService {
 			}
 			String updateTimeStr = DateUtil.convertZT2String(price.getTime().getUpdatedISO());
 			// USD
-			priceList.add(new NewCoinResp(price.getBpi().getUSD().getCode(),
-					tempCurrency.get(price.getBpi().getUSD().getCode()), price.getBpi().getUSD().getRate_float(),
-					updateTimeStr));
+			String usdCN = tempCurrency.get(price.getBpi().getUSD().getCode());
+			usdCN = StringUtils.isNotBlank(usdCN) ? usdCN : "Non";
+			priceList.add(new NewCoinResp(price.getBpi().getUSD().getCode(), usdCN,
+					price.getBpi().getUSD().getRate_float(), updateTimeStr));
 			// GBP
-			priceList.add(new NewCoinResp(price.getBpi().getGBP().getCode(),
-					tempCurrency.get(price.getBpi().getGBP().getCode()), price.getBpi().getGBP().getRate_float(),
-					updateTimeStr));
+			String gbpCN = tempCurrency.get(price.getBpi().getGBP().getCode());
+			gbpCN = StringUtils.isNotBlank(gbpCN) ? gbpCN : "Non";
+			priceList.add(new NewCoinResp(price.getBpi().getGBP().getCode(), gbpCN,
+					price.getBpi().getGBP().getRate_float(), updateTimeStr));
 			// EUR
-			priceList.add(new NewCoinResp(price.getBpi().getEUR().getCode(),
-					tempCurrency.get(price.getBpi().getEUR().getCode()), price.getBpi().getEUR().getRate_float(),
-					updateTimeStr));
+			String eurCN = tempCurrency.get(price.getBpi().getEUR().getCode());
+			eurCN = StringUtils.isNotBlank(eurCN) ? eurCN : "Non";
+			priceList.add(new NewCoinResp(price.getBpi().getEUR().getCode(), eurCN,
+					price.getBpi().getEUR().getRate_float(), updateTimeStr));
 		} catch (APIException ex) {
 			log.error("get all new current price error!!", ex);
 			throw ex;
